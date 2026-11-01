@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="MCE6001 随机过程期末复习：课件考点 × 作业全题全解 × 题型套路 × 公式速查。单文件离线网页。">
+<meta name="theme-color" content="#f8fafc">
+<title>MCE6001 随机过程 · 期末复习</title>
+<style>{{KATEX_CSS}}</style>
+<style>{{CSS}}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap topin">
+    <a class="brand" href="#top">MCE<b>6001</b><small>Random Processes · Fall 26</small></a>
+    <div class="tools no-print">
+      <input class="search" id="q" type="search" placeholder="搜索考点 / 题目…" autocomplete="off" aria-label="搜索">
+      <button class="btn" id="expand" title="展开所有答案">展开</button>
+      <button class="btn" id="collapse" title="折叠所有答案">折叠</button>
+      <button class="btn icon" id="theme" title="切换深浅色" aria-label="切换主题">🌙</button>
+    </div>
+  </div>
+  <nav class="tabs no-print" id="tabs" aria-label="章节导航">{{NAV}}</nav>
+</header>
+<main class="wrap" id="top">{{BODY}}</main>
+<footer>
+  <b>MCE6001 Random Processes</b> · Fall 26 · Instructor Zitan Chen<br>
+  单文件离线网页 · 可打印 / 导出 PDF · 内容依据课件与作业整理，仅供复习参考
+</footer>
+<script>
+(function(){
+  var EXAM = new Date({{EXAM_DATE_JSON}} + "T09:00:00+08:00");
+  var cd = document.getElementById("cd");
+  function tick(){
+    if(!cd) return;
+    var d = Math.ceil((EXAM - new Date()) / 864e5);
+    cd.textContent = d >= 0 ? "⏳ 距考试（" + (EXAM.getMonth()+1) + " 月 " + EXAM.getDate() + " 日 · 周五）还有 " + d + " 天" : "考试已结束";
+  }
+  tick(); setInterval(tick, 6e4);
+  var root = document.documentElement;
+  var themeBtn = document.getElementById("theme");
+  function setTheme(dark){ root.dataset.theme = dark ? "dark" : ""; themeBtn.textContent = dark ? "☀️" : "🌙"; try{ localStorage.setItem("mce6001-theme", dark ? "dark" : ""); }catch(e){} }
+  var saved = null; try{ saved = localStorage.getItem("mce6001-theme"); }catch(e){}
+  setTheme(saved === "dark");
+  themeBtn.onclick = function(){ setTheme(root.dataset.theme !== "dark"); };
+  document.getElementById("expand").onclick = function(){ document.querySelectorAll("details.sol").forEach(function(d){ d.open = true; }); };
+  document.getElementById("collapse").onclick = function(){ document.querySelectorAll("details.sol").forEach(function(d){ d.open = false; }); };
+  window.addEventListener("beforeprint", function(){ document.querySelectorAll("details.sol").forEach(function(d){ d.open = true; }); });
+  var q = document.getElementById("q");
+  q.addEventListener("input", function(){
+    var s = q.value.trim().toLowerCase();
+    document.querySelectorAll(".problem").forEach(function(el){
+      el.classList.toggle("hidden", !!s && el.textContent.toLowerCase().indexOf(s) === -1);
+    });
+    document.querySelectorAll(".block").forEach(function(bl){
+      if (!s) { bl.classList.remove("hidden"); return; }
+      var any = bl.querySelector(".problem:not(.hidden)") || bl.textContent.toLowerCase().indexOf(s) !== -1;
+      bl.classList.toggle("hidden", !any);
+    });
+  });
+  var tabs = document.querySelectorAll("nav.tabs a");
+  var targets = document.querySelectorAll("main .block, main .hero");
+  if ("IntersectionObserver" in window) {
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (!e.isIntersecting) return;
+        var id = e.target.id;
+        tabs.forEach(function(a){ a.classList.toggle("on", a.getAttribute("href") === "#" + id); });
+      });
+    }, { rootMargin: "-35% 0px -60% 0px" });
+    targets.forEach(function(t){ if (t.id) obs.observe(t); });
+  }
+})();
+</script>
+</body>
+</html>
