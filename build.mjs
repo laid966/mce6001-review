@@ -46,6 +46,7 @@ function inline(s) {
   return s;
 }
 
+const DQ = "$$";
 function mdBlocks(lines) {
   const out = [];
   let para = [], list = null, quote = [];
@@ -56,7 +57,19 @@ function mdBlocks(lines) {
   for (let i = 0; i < lines.length; i++) {
     const t = lines[i].trim();
     if (!t) { flushAll(); continue; }
-    if (t.startsWith("$$")) { flushAll(); out.push(renderTex(t.replace(/^\$\$/, "").replace(/\$\$$/, ""), true)); continue; }
+    if (t.startsWith(DQ)) {
+      flushAll();
+      let tex;
+      if (t.length > 4 && t.endsWith(DQ)) { tex = t.slice(2, -2); }
+      else {
+        tex = t.slice(2);
+        i++;
+        while (i < lines.length && !lines[i].trim().endsWith(DQ)) { tex += "\n" + lines[i].trim(); i++; }
+        if (i < lines.length) { const last = lines[i].trim(); tex += "\n" + (last === DQ ? "" : last.slice(0, -2)); }
+      }
+      out.push(renderTex(tex, true));
+      continue;
+    }
     if (t.startsWith("|")) {
       flushAll();
       const rows = [];
