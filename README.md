@@ -21,3 +21,6 @@ node build.mjs   # 读取 content/*.md 与 ../_content/summary_*.md，生成单�
 ```
 
 内容源文件在 `content/`（作业与速查）与上级目录 `_content/`（课件总结 Markdown）。
+
+## 推送说明
+若 `git push` 提示非快进（历史分叉，因曾通过 GitHub API 同步），执行 `git pull --rebase origin main` 或 `git push --force-with-lease` 即可；网页内容以 `index.html` 为准。
