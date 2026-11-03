@@ -1,10 +1,11 @@
-// cheat.mjs - 生成一张 A4 双面（2 页）小抄 HTML（用法: node cheat.mjs [fontSizePx]）
+// cheat.mjs - 一张 A4 双面小抄（黑白）：p1 = 原题原文扫描 2x2，p2 = 解答与速查三栏
+// 用法: node cheat.mjs [fontSizePx]
 import fs from "node:fs";
 import path from "node:path";
 import katex from "katex";
 import { fileURLToPath } from "node:url";
 const root = path.dirname(fileURLToPath(import.meta.url));
-const FS = parseFloat(process.argv[2] || "15");
+const FS = parseFloat(process.argv[2] || "10");
 
 const src = fs.readFileSync(path.join(root, "build.mjs"), "utf8");
 const a = src.indexOf("function katexCssInline");
@@ -21,11 +22,12 @@ for (const line of md.split("\n")) {
   if (line.startsWith("## ")) { cur = { h: line.slice(3), body: [] }; secs.push(cur); continue; }
   if (cur) cur.body.push(line);
 }
-const grp = h => h.startsWith("A1-") ? "g1" : h.startsWith("A2-") ? "g2" : h.startsWith("必背") ? "g3" : "g4";
-
 const body = secs.map(s =>
-  "<section class=\"q " + grp(s.h) + "\"><h3>" + fns.inline(s.h) + "</h3>" + fns.renderMd(s.body.join("\n")) + "</section>"
+  "<section class=\"q\"><h3>" + fns.inline(s.h) + "</h3>" + fns.renderMd(s.body.join("\n")) + "</section>"
 ).join("\n");
+
+const img = f => "data:image/jpeg;base64," + fs.readFileSync(path.join(root, "assets", f)).toString("base64");
+const imgs = ["hw1_p1.jpg", "hw1_p2.jpg", "hw2_p1.jpg", "hw2_p2.jpg"].map(img);
 
 const html = `<!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
@@ -35,27 +37,42 @@ const html = `<!DOCTYPE html>
 @page { size: A4 portrait; margin: 0; }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-body { font-family: "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: ${FS}px; line-height: 1.42; color: #111; padding: 5mm 5mm 4mm; }
-header { text-align: center; margin-bottom: 2.2mm; padding-bottom: 1.4mm; border-bottom: 0.5mm solid #111; }
-header h1 { font-size: ${FS + 3}px; margin: 0; letter-spacing: .03em; }
-header .meta { font-size: ${FS - 1}px; color: #444; margin-top: 0.6mm; }
-.cols { column-count: 2; column-gap: 5mm; column-rule: 0.25mm solid #ccc; }
-.q { break-inside: auto; margin: 0 0 1.8mm; padding: 1.1mm 1.5mm 1.3mm; border: 0.2mm solid #d8d8d8; border-radius: 1.2mm; background: #fcfcfc; }
-.q h3 { font-size: ${FS + 1}px; margin: -1.4mm -1.8mm 1.2mm; padding: 0.7mm 1.8mm; border-radius: 1.2mm 1.2mm 0 0; break-after: avoid; color: #fff; }
-.g1 h3 { background: #1d4ed8; }
-.g2 h3 { background: #6d28d9; }
-.g3 h3 { background: #b45309; }
-.g4 h3 { background: #047857; }
-.q p { margin: 0.5mm 0; text-align: justify; }
-.q strong { background: linear-gradient(transparent 62%, #ffe58a 62%, #ffe58a 96%, transparent 96%); font-weight: 700; }
-.q ul { margin: 0.5mm 0; padding-left: 3.6mm; }
+body { font-family: "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: ${FS}px; line-height: 1.4; color: #000; background: #fff; padding: 4mm 4mm 3mm; }
+.sheet1 { break-after: page; }
+.tstrip { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; border-bottom: 0.6mm solid #000; padding-bottom: 1.2mm; margin-bottom: 2.2mm; }
+.tstrip h1 { font-size: ${FS + 4}px; margin: 0; letter-spacing: .02em; }
+.tstrip .meta { font-size: ${FS - 0.5}px; color: #222; white-space: nowrap; }
+.imggrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8mm; }
+.imggrid figure { margin: 0; }
+.imggrid img { width: 100%; display: block; border: 0.25mm solid #555; filter: grayscale(1) contrast(1.08); }
+.imggrid figcaption { font-size: ${FS - 1.5}px; color: #222; text-align: center; margin-top: 0.6mm; }
+.cap { font-size: ${FS - 1.5}px; color: #222; margin-top: 1.6mm; border-top: 0.2mm solid #999; padding-top: 1mm; }
+.cols { column-count: 3; column-gap: 3mm; column-rule: 0.2mm solid #999; }
+.q { break-inside: auto; margin: 0 0 1.6mm; padding: 1mm 1.3mm 1.2mm; border: 0.2mm solid #888; }
+.q h3 { font-size: ${FS + 0.9}px; margin: -1mm -1.3mm 1mm; padding: 0.55mm 1.3mm; background: #000; color: #fff; break-after: avoid; letter-spacing: .01em; }
+.q p { margin: 0.45mm 0; text-align: justify; }
+.q strong { font-weight: 700; }
+.q ul { margin: 0.5mm 0; padding-left: 3.4mm; }
 .q li { margin: 0.4mm 0; }
-.katex { font-size: 1.04em; }
-.katex-display { margin: 0.8mm 0; padding: 0; overflow: visible; }
-.katex-display > .katex { font-size: 1.04em; }
+.tablewrap { border: 0.2mm solid #888; margin: 1mm 0; }
+table { width: 100%; border-collapse: collapse; font-size: ${FS - 0.6}px; min-width: 0; }
+th, td { border: 0.15mm solid #aaa; padding: 0.4mm 1mm; vertical-align: top; }
+th { background: #e6e6e6; }
+.katex { font-size: 1.03em; }
+.katex-display { margin: 0.7mm 0; padding: 0; overflow: visible; }
+.katex-display > .katex { font-size: 1.03em; }
 </style></head>
 <body>
-<header><h1>${fns.esc(title)}</h1><div class="meta">${fns.esc(meta)}</div></header>
+<div class="sheet1">
+  <div class="tstrip"><h1>${fns.esc(title)}</h1><span class="meta">${fns.esc(meta)}</span></div>
+  <div class="imggrid">
+    <figure><img src="${imgs[0]}"><figcaption>作业 1 · 第 1 页（P1–P3）</figcaption></figure>
+    <figure><img src="${imgs[1]}"><figcaption>作业 1 · 第 2 页（P4–P5）</figcaption></figure>
+    <figure><img src="${imgs[2]}"><figcaption>作业 2 · 第 1 页（P1–P4）</figcaption></figure>
+    <figure><img src="${imgs[3]}"><figcaption>作业 2 · 第 2 页（P5）</figcaption></figure>
+  </div>
+  <div class="cap">上：两次作业原题原文（缩印）；背面：全部解答 + 必背速记 + 课件考点附录 + 反例库 + 题型识别 + 基础知识与定理速查。</div>
+</div>
 <div class="cols">${body}</div>
 </body></html>`;
 fs.writeFileSync(path.join(root, "cheat_a4.html"), html);
