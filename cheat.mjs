@@ -22,9 +22,13 @@ for (const line of md.split("\n")) {
   if (line.startsWith("## ")) { cur = { h: line.slice(3), body: [] }; secs.push(cur); continue; }
   if (cur) cur.body.push(line);
 }
-const body = secs.map(s =>
+let body = secs.map(s =>
   "<section class=\"q\"><h3>" + fns.inline(s.h) + "</h3>" + fns.renderMd(s.body.join("\n")) + "</section>"
 ).join("\n");
+body = body
+  .replace(/<strong>记背<\/strong>：/g, '<span class="lb lb1">记背</span>')
+  .replace(/<strong>套路<\/strong>：/g, '<span class="lb lb2">套路</span>')
+  .replace(/<strong>易错<\/strong>：/g, '<span class="lb lb3">易错</span>');
 
 const img = f => "data:image/jpeg;base64," + fs.readFileSync(path.join(root, "assets", f)).toString("base64");
 const solImgs = [
@@ -41,7 +45,7 @@ const html = `<!DOCTYPE html>
 @page { size: A4 portrait; margin: 0; }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-body { font-family: "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: ${FS}px; line-height: 1.4; color: #000; background: #fff; padding: 4mm 4mm 3mm; }
+body { font-family: "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: ${FS}px; line-height: 1.52; color: #000; background: #fff; padding: 4mm 4.5mm 3.5mm; }
 .sheet1 { break-after: page; }
 .tstrip { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; border-bottom: 0.6mm solid #000; padding-bottom: 1.2mm; margin-bottom: 2.2mm; }
 .tstrip h1 { font-size: ${FS + 4}px; margin: 0; letter-spacing: .02em; }
@@ -51,13 +55,18 @@ body { font-family: "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", san
 .imggrid img { width: 100%; display: block; border: 0.25mm solid #555; filter: grayscale(1) contrast(1.08); }
 .imggrid figcaption { font-size: ${FS - 1.5}px; color: #222; text-align: center; margin-top: 0.6mm; }
 .cap { font-size: ${FS - 1.5}px; color: #222; margin-top: 1.6mm; border-top: 0.2mm solid #999; padding-top: 1mm; }
-.cols { column-count: 3; column-gap: 3mm; column-rule: 0.2mm solid #999; }
-.q { break-inside: auto; margin: 0 0 1.6mm; padding: 1mm 1.3mm 1.2mm; border: 0.2mm solid #888; }
-.q h3 { font-size: ${FS + 0.9}px; margin: -1mm -1.3mm 1mm; padding: 0.55mm 1.3mm; background: #000; color: #fff; break-after: avoid; letter-spacing: .01em; }
-.q p { margin: 0.45mm 0; text-align: justify; }
+.cols { column-count: 2; column-gap: 4.5mm; column-rule: 0.2mm solid #999; }
+.q { break-inside: avoid; margin: 0 0 2.4mm; padding: 1.5mm 2mm 1.7mm; border: 0.25mm solid #666; }
+.q h3 { font-size: ${FS + 1.3}px; margin: -1.5mm -2mm 1.4mm; padding: 0.8mm 2mm; background: #000; color: #fff; break-after: avoid; letter-spacing: .02em; }
+.q p { margin: 0.7mm 0; text-align: left; }
+.lb { display: inline-block; font-weight: 700; font-size: .9em; line-height: 1.25; padding: 0.1mm 1.4mm; border-radius: 0.8mm; margin-right: 1.2mm; }
+.lb1 { background: #000; color: #fff; }
+.lb2 { background: #8a8a8a; color: #fff; }
+.lb3 { background: #fff; color: #000; border: 0.22mm solid #000; }
 .q strong { font-weight: 700; }
-.q ul { margin: 0.5mm 0; padding-left: 3.4mm; }
-.q li { margin: 0.4mm 0; }
+.q ul { margin: 0.6mm 0; padding-left: 3.8mm; }
+.q li { margin: 1mm 0; padding-left: 0.4mm; }
+.q li::marker { color: #000; }
 .tablewrap { border: 0.2mm solid #888; margin: 1mm 0; }
 table { width: 100%; border-collapse: collapse; font-size: ${FS - 0.6}px; min-width: 0; }
 th, td { border: 0.15mm solid #aaa; padding: 0.4mm 1mm; vertical-align: top; }
