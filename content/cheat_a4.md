@@ -1,5 +1,5 @@
 # MCE6001 随机过程 · 一页小抄
-<meta>赵铖城 226010078 · Fall 26 · 作业 1+2 原题与全解</meta>
+<meta>赵铖城 226010078 · Fall 26 · 作业 1+2 原题与全解 · 一张 A4 双面</meta>
 
 ## A1-P1 (10分) 均方收敛充要条件
 **题**：$X_i$ 独立，$E[X_i]=0$，$E[X_i^2]<\infty$，$S_n=\sum_{i=1}^n X_i$。证 $(S_n)$ 均方收敛 $\Leftrightarrow \sum_{i=1}^\infty \mathrm{Var}(X_i)<\infty$。
@@ -53,3 +53,37 @@
 
 ## 必背速记
 收敛链：$a.s.\Rightarrow p\Rightarrow d$，$m.s.\Rightarrow p\Rightarrow d$，反之均不成立；有界+p 收敛⇒m.s. 收敛。m.s. Cauchy：$E[(X_n-X_m)^2]\to0$。Lévy：$\Phi_n\to\Phi$ 逐点且 $\Phi$ 在 0 连续⇔d 收敛。联合高斯：$E[X|Y=y]=\mu_X+\frac{\mathrm{Cov}}{\mathrm{Var}(Y)}(y-\mu_Y)$，$\mathrm{Var}(X|Y)=\mathrm{Var}(X)-\frac{\mathrm{Cov}^2}{\mathrm{Var}(Y)}$；不相关⇔独立；误差 $\perp$ 观测。线性 MMSE：$\widehat E[X|Y]=\mu_X+\frac{\mathrm{Cov}}{\mathrm{Var}(Y)}(Y-\mu_Y)$，MSE $=\mathrm{Var}(X)(1-\rho^2)$。Markov $P\{Y\ge a\}\le E[Y]/a$；Chebyshev $\le\sigma^2/\epsilon^2$。$\Phi(.5)=.6915$，$\Phi(1)=.8413$，$\Phi(1.5)=.9332$，$\Phi(2)=.9772$，$\Phi(1/\sqrt2)=.7602$。
+
+## 课件考点附录（Part 1–4 浓缩）
+- **四种收敛定义**：a.s.：$P\{\omega:\lim_n X_n(\omega)=X(\omega)\}=1$；m.s.：$E[(X_n-X)^2]\to0$；p：$\forall\epsilon>0, P\{|X_n-X|\ge\epsilon\}\to0$；d：$F_{X_n}(x)\to F_X(x)$（$F_X$ 连续点）。关系：$a.s.\Rightarrow p\Rightarrow d$，$m.s.\Rightarrow p$；p 收敛⇒存在 a.s. 收敛子列；**有界 + p⇒m.s.**
+- **Borel–Cantelli**：$\sum P(A_n)<\infty\Rightarrow P(A_n\ i.o.)=0$；独立且 $\sum P(A_n)=\infty\Rightarrow P(i.o.)=1$（证 a.s. 收敛利器）。
+- **大数/中心极限**：WLLN $\bar X_n\xrightarrow{p}\mu$（方差有限）；SLLN（i.i.d. 均值有限）；CLT $\frac{\sqrt n(\bar X_n-\mu)}{\sigma}\xrightarrow{d}N(0,1)$；Poisson 逼近 $(1+z_n/n)^n\to e^z$；$\bar X_n$ 偏差 $O(1)$ 用 Chernoff/大偏差，$O(1/\sqrt n)$ 用 CLT。
+- **特征函数**：$\Phi_X(u)=E[e^{juX}]$ 唯一决定分布；独立和相乘；$\Phi_{aX+b}(u)=e^{jub}\Phi_X(au)$；Lévy 连续性定理；$\Phi$ 在 0 连续是关键。
+- **连续映射**：$g$ 连续⇒a.s./p 收敛保持；d 版本要求 $g$ 在极限分布的支撑上 a.s. 连续；不连续点可构造反例。
+- **联合高斯性质**：线性变换仍高斯；不相关⇔独立；边缘仍高斯；条件分布高斯（公式见必背）；$\mathrm{Cov}$ 对称半正定。
+- **条件期望性质**：$E[E[X|Y]]=E[X]$；$X=g(Y)\Rightarrow E[X|Y]=X$；取出已知 $E[g(Y)X|Y]=g(Y)E[X|Y]$；塔式 $E[E[X|Y,Z]|Y]=E[X|Y]$；$E[X|Y]$ 是 MMSE 最优且误差正交：$E[(X-E[X|Y])h(Y)]=0$。
+- **线性估计/投影**：闭线性子空间上投影唯一（正交原理）；新息正交化 $\tilde Y_k=Y_k-\widehat E[Y_k|Y_1..Y_{k-1}]$；$\widehat E[X|Y_1..Y_k]=\sum_i\frac{\mathrm{Cov}(X,\tilde Y_i)}{\mathrm{Var}(\tilde Y_i)}\tilde Y_i$；$\mathrm{MSE}=\mathrm{Var}(X)-\sum_i\frac{\mathrm{Cov}(X,\tilde Y_i)^2}{\mathrm{Var}(\tilde Y_i)}$。
+- **宽平稳与遍历**：均值常数 + $R_X(t_1,t_2)=R_X(t_1-t_2)$；$|R(\tau)|\le R(0)=E[X^2]$；均值遍历⇔$\frac1T\int_0^T(1-\frac{\tau}{T})C(\tau)d\tau\to0$（离散类似）。
+- **泊松过程**：速率 $\lambda$：$N(t)\sim\mathrm{Poisson}(\lambda t)$，独立平稳增量；到达间隔 i.i.d. $\mathrm{Exp}(\lambda)$；$E[N(t)]=\lambda t$；给定 $N(t)=n$ 到达时刻 = $n$ 个 i.i.d. $U[0,t]$ 的顺序统计量；叠加/分解保持泊松。
+- **马尔可夫链**：$P\{X_{n+1}|X_0..X_n\}=P\{X_{n+1}|X_n\}$；转移矩阵行和 1；C-K 方程 $P^{(n+m)}=P^nP^m$；平稳分布 $\pi P=\pi$，$\sum\pi_i=1$。
+- **Kalman 向量形式**：$K_k=\Sigma_k^-H^T(H\Sigma_k^-H^T+R)^{-1}$；$\hat x_k^+=\hat x_k^-+K_k(y_k-H\hat x_k^-)$；$\Sigma_k^+=(I-K_kH)\Sigma_k^-$；$\hat x_{k+1}^-=F\hat x_k^+$；$\Sigma_{k+1}^-=F\Sigma_k^+F^T+Q$。
+
+## 反例库（收敛关系一律"反之不成立"）
+- **a.s.⇏m.s.**：$X_n=n\cdot\mathbf1_{(0,1/n]}$（$[0,1]$ Lebesgue）：a.s.→0 但 $E[X_n^2]=n\to\infty$。
+- **m.s./p⇏a.s.**：滑动 blips $X_n=\mathbf1_{I_n}$，$|I_n|\to0$ 反复扫过 $[0,1]$：m.s.、p→0，但每个 $\omega$ 无限次命中⇒不 a.s.；取 $I_n$ 长度 $1/n$（调和）则 Borel–Cantelli 第二引理给 a.s. 不收敛。
+- **d⇏p**：$X\sim N(0,1)$，$X_n=-X$：$X_n\xrightarrow{d}X$（同分布）但 $X_n-X=-2X\not\to0$（不 p）。
+- **p⇏m.s.（无界时）**：$X_n=n$ w.p. $1/n$，否则 0：p→0 但 $E[X_n^2]=n\to\infty$。
+- **不连续映射反例**：$X_n=(-1)^n/n\xrightarrow{a.s.}0$，$h=\mathrm{sign}^+$ 阶跃⇒$h(X_n)=(-1)^n$ 不收敛（作业1 P4）。
+- **有界救场**：$|X_n|\le C$ 且 p 收敛⇒m.s. 收敛（作业1 P5(a) 否 p 的钥匙）。
+
+## 题型识别关键词 → 套路
+- "证明 m.s. 收敛/充要条件"⇒展开 $E[(S_n-S_m)^2]$ + Cauchy 准则（A1-P1）。
+- "特征函数/逐点极限/四种收敛"⇒独立和相乘、缩放 $\Phi(u/\sqrt n)$、$(\cos\frac{u}{\sqrt n})^n\to e^{-u^2/2}$；否 a.s. 用增量不趋于 0（A1-P2）。
+- "尾概率上界/优化"⇒Markov + 指数倾斜 + 对 $t$ 求导（A1-P3）。
+- "连续/不连续函数变换"⇒连续映射定理 / 横跳反例（A1-P4）。
+- "$\Theta\sim U[0,2\pi)$ 三角序列"⇒正交性、同分布、稠密振荡；$|W|^n$ 几何衰减（A1-P5）。
+- "联合高斯/条件密度/误差概率"⇒条件均值方差公式、误差⊥观测⇒独立（A2-P1）。
+- "新息/正交化/系数优化"⇒Gram–Schmidt、对角协方差、逐项 $\mathrm{Cov}/\mathrm{Var}$（A2-P2）。
+- "$X=g(U)$ 求条件期望"⇒可测性直接得 $X$，MSE=0（A2-P3）。
+- "带帽 $\widehat E$"⇒线性 MMSE 一二阶矩公式；"不带帽"⇒后验均值（A2-P4）。
+- "状态空间/递推估计"⇒KF 更新-预测模板 + Riccati（A2-P5）。
