@@ -27,7 +27,11 @@ const body = secs.map(s =>
 ).join("\n");
 
 const img = f => "data:image/jpeg;base64," + fs.readFileSync(path.join(root, "assets", f)).toString("base64");
-const imgs = ["hw1_p1.jpg", "hw1_p2.jpg", "hw2_p1.jpg", "hw2_p2.jpg"].map(img);
+const solImgs = [
+  ["s1_p1.jpg", "作业 1 官方解答 P1"], ["s1_p2.jpg", "作业 1 官方解答 P2"], ["s1_p3.jpg", "作业 1 官方解答 P3"],
+  ["s1_p4.jpg", "作业 1 官方解答 P4"], ["s2_p1.jpg", "作业 2 官方解答 P1"], ["s2_p2.jpg", "作业 2 官方解答 P2"],
+  ["s2_p3.jpg", "作业 2 官方解答 P3"], ["s2_p4.jpg", "作业 2 官方解答 P4"], ["s2_p5.jpg", "作业 2 官方解答 P5"],
+].map(([f, c]) => ({ src: img(f), cap: c }));
 
 const html = `<!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
@@ -42,7 +46,7 @@ body { font-family: "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", san
 .tstrip { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; border-bottom: 0.6mm solid #000; padding-bottom: 1.2mm; margin-bottom: 2.2mm; }
 .tstrip h1 { font-size: ${FS + 4}px; margin: 0; letter-spacing: .02em; }
 .tstrip .meta { font-size: ${FS - 0.5}px; color: #222; white-space: nowrap; }
-.imggrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8mm; }
+.imggrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5mm; }
 .imggrid figure { margin: 0; }
 .imggrid img { width: 100%; display: block; border: 0.25mm solid #555; filter: grayscale(1) contrast(1.08); }
 .imggrid figcaption { font-size: ${FS - 1.5}px; color: #222; text-align: center; margin-top: 0.6mm; }
@@ -66,12 +70,9 @@ th { background: #e6e6e6; }
 <div class="sheet1">
   <div class="tstrip"><h1>${fns.esc(title)}</h1><span class="meta">${fns.esc(meta)}</span></div>
   <div class="imggrid">
-    <figure><img src="${imgs[0]}"><figcaption>作业 1 · 第 1 页（P1–P3）</figcaption></figure>
-    <figure><img src="${imgs[1]}"><figcaption>作业 1 · 第 2 页（P4–P5）</figcaption></figure>
-    <figure><img src="${imgs[2]}"><figcaption>作业 2 · 第 1 页（P1–P4）</figcaption></figure>
-    <figure><img src="${imgs[3]}"><figcaption>作业 2 · 第 2 页（P5）</figcaption></figure>
+    ${solImgs.map(o => `<figure><img src="${o.src}"><figcaption>${o.cap}</figcaption></figure>`).join("\n    ")}
   </div>
-  <div class="cap">上：两次作业原题原文（缩印）；背面：全部解答 + 必背速记 + 课件考点附录 + 反例库 + 题型识别 + 基础知识与定理速查。</div>
+  <div class="cap">上：两次作业官方解答原文（缩印 3×3）；背面：打字版全解 + 必背速记 + 课件考点附录 + 反例库 + 题型识别 + 基础知识与定理速查。</div>
 </div>
 <div class="cols">${body}</div>
 </body></html>`;
