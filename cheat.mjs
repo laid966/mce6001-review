@@ -45,16 +45,16 @@ const html = `<!DOCTYPE html>
 @page { size: A4 portrait; margin: 0; }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-body { font-family: "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: ${FS}px; line-height: 1.52; color: #000; background: #fff; padding: 4mm 4.5mm 3.5mm; }
+body { font-family: "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; font-size: ${FS}px; line-height: 1.52; color: #000; background: #fff; padding: 3mm 3.5mm 2.5mm; }
 .sheet1 { break-after: page; }
-.tstrip { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; border-bottom: 0.6mm solid #000; padding-bottom: 1.2mm; margin-bottom: 2.2mm; }
-.tstrip h1 { font-size: ${FS + 4}px; margin: 0; letter-spacing: .02em; }
-.tstrip .meta { font-size: ${FS - 0.5}px; color: #222; white-space: nowrap; }
-.imggrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5mm; }
-.imggrid figure { margin: 0; }
-.imggrid img { width: 100%; display: block; border: 0.25mm solid #555; filter: grayscale(1) contrast(1.08); }
-.imggrid figcaption { font-size: ${FS - 1.5}px; color: #222; text-align: center; margin-top: 0.6mm; }
-.cap { font-size: ${FS - 1.5}px; color: #222; margin-top: 1.6mm; border-top: 0.2mm solid #999; padding-top: 1mm; }
+.tstrip { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; border-bottom: 0.5mm solid #000; padding-bottom: 0.8mm; margin-bottom: 1.6mm; }
+.tstrip h1 { font-size: ${FS + 2.5}px; margin: 0; letter-spacing: .02em; }
+.tstrip .meta { font-size: ${FS - 1}px; color: #222; white-space: nowrap; }
+.imggrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4mm; }
+.imggrid figure { margin: 0; display: flex; flex-direction: column; align-items: center; }
+.imggrid img { height: 88.5mm; max-width: 100%; width: auto; display: block; border: 0.25mm solid #555; filter: grayscale(1) contrast(1.12) sharpen(0.3); image-rendering: -webkit-optimize-contrast; }
+.imggrid figcaption { font-size: ${FS - 2}px; color: #222; text-align: center; margin-top: 0.5mm; line-height: 1.2; }
+.cap { font-size: ${FS - 2}px; color: #222; margin-top: 1.2mm; border-top: 0.2mm solid #999; padding-top: 0.8mm; }
 .cols { column-count: 2; column-gap: 4.5mm; column-rule: 0.2mm solid #999; }
 .q { break-inside: avoid; margin: 0 0 2.4mm; padding: 1.5mm 2mm 1.7mm; border: 0.25mm solid #666; }
 .q h3 { font-size: ${FS + 1.3}px; margin: -1.5mm -2mm 1.4mm; padding: 0.8mm 2mm; background: #000; color: #fff; break-after: avoid; letter-spacing: .02em; }
